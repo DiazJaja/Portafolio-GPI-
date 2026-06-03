@@ -2,7 +2,7 @@
 
 ###
 
-<p align="justify">Este no es un portafolio tradicional. Es un sitio web minimalista y conversacional donde la interfaz habla contigo: traduce al instante entre español e inglés, te guía entre secciones cuando lo necesitas y responde a tus preguntas sin que tengas que salir de la página.<br><br>Desarrollado por Juan Carlos, front-end freelance. Construido con HTML5, CSS3, JavaScript vanilla y Tailwind CSS. Sin frameworks pesados, sin recargas, sin interrupciones.</p>
+<p align="justify">Este no es un portafolio tradicional. Es un sitio web minimalista y conversacional donde Aira, tu asistente virtual, habla contigo: responde a tus preguntas sobre Juan Carlos, lee su CV en voz alta, muestra sus habilidades y contactos, y cambia el idioma entre español e inglés. Todo sin salir de la página.<br><br>Desarrollado por Juan Carlos, front-end freelance. Construido con HTML5, CSS3, JavaScript vanilla y Tailwind CSS. Sin frameworks pesados, sin recargas, sin interrupciones.</p>
 
 ###
 
