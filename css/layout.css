@@ -1,0 +1,166 @@
+/* ===== SISTEMA DE PANTALLAS ===== */
+.screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+    transform: scale(0.95);
+    z-index: var(--z-base);
+}
+
+.screen--active {
+    opacity: 1;
+    pointer-events: all;
+    transform: scale(1);
+    z-index: 10;
+}
+
+.screen--hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.05);
+}
+
+/* ===== PANTALLA 1: INICIO ===== */
+#screen-home {
+    background: var(--color-bg);
+    cursor: pointer;
+}
+
+.home__content {
+    text-align: center;
+    animation: fadeInUp 0.8s ease;
+}
+
+.home__logo-container {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto var(--space-lg);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--radius-full);
+    padding: 8px;
+    animation: pulse 2s infinite;
+}
+
+.home__logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: var(--radius-full);
+}
+
+.home__name {
+    font-size: 1.5rem;
+    font-weight: var(--font-medium);
+    color: var(--color-text);
+    margin-bottom: var(--space-xs);
+}
+
+.home__role {
+    font-size: 1rem;
+    font-weight: var(--font-light);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xl);
+}
+
+.home__hint {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    animation: bounce 2s infinite;
+}
+
+.home__hint i {
+    font-size: 1.2rem;
+    color: var(--color-primary);
+}
+
+/* ===== PANTALLA 2: TRANSICIÓN ===== */
+#screen-transition {
+    background: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.transition__content {
+    text-align: center;
+    max-width: 600px;
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.transition__logo-fade {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto var(--space-xl);
+    opacity: 0.15;
+    filter: grayscale(100%);
+}
+
+.transition__logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.transition__quote {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.transition__quote p {
+    font-size: 1.5rem;
+    font-weight: var(--font-medium);
+    line-height: 1.4;
+    color: var(--color-text);
+    margin: 0;
+}
+
+/* ===== PANTALLA 3: SOBRE MÍ ===== */
+#screen-about {
+    background: var(--color-bg);
+    align-items: stretch;
+    justify-content: flex-start;
+    padding-top: 80px;
+}
+
+.about__main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    /* SUBIDO: antes sin margin-top, ahora negativo para subir todo */
+    margin-top: -40px;
+}
+
+/* WRAPPER: contiene tarjeta + modal */
+.about__wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    position: relative;
+    transition: gap 0.4s ease;
+    width: 100%;
+    max-width: 1000px;
+}

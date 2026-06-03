@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Carlos Díaz Quintanilla | Front-End Developer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/projects.css">
+    <link rel="stylesheet" href="css/nexo.css">
+    <link rel="stylesheet" href="css/aira-domain.css">
+
+<base target="_blank">
+</head>
+<body>
+
+    <!-- ==================== AIRA CHAT MODAL ==================== -->
+    <div class="aira-overlay" id="airaOverlay" onclick="closeAira(event)">
+        <div class="aira-chat-container" onclick="event.stopPropagation()">
+
+            <!-- Header del chat -->
+            <div class="aira-chat-header">
+                <div class="aira-chat-avatar">
+                    <img src="assets/images/aira.jpeg" alt="Aira" onerror="this.style.display='none'; this.parentElement.innerHTML='🤖';">
+                </div>
+                <div class="aira-chat-info">
+                    <h4>Aira</h4>
+                    <span class="aira-status-text" id="aira-status-text">En línea</span>
+                </div>
+                <button class="aira-voice-btn" id="aira-mic-btn" onclick="toggleVoice()">
+                    <i class="bi bi-mic-fill"></i>
+                </button>
+            </div>
+
+            <!-- Área de mensajes -->
+            <div class="aira-chat-messages" id="aira-chat-messages"></div>
+
+            <!-- Indicador de escritura -->
+            <div class="aira-typing-indicator" id="aira-typing" style="display: none;">
+                <span></span><span></span><span></span>
+            </div>
+
+            <!-- Área de input -->
+            <div class="aira-chat-input-area">
+                <div class="aira-input-wrapper" id="aira-text-wrapper">
+                    <input type="text" 
+                           class="aira-chat-input" 
+                           id="aira-chat-input" 
+                           placeholder="Escribe tu mensaje..." data-i18n-placeholder="aira.placeholder" 
+                           onkeypress="handleChatKeypress(event)">
+                    <button class="aira-send-btn" onclick="sendChatMessage()" title="Enviar mensaje">
+                        <svg class="send-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" stroke-width="1.5"/>
+                            <path d="M12 8l4 4-4 4M8 12h8" stroke-width="2"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="aira-voice-indicator" id="aira-voice-indicator">
+                    <span class="aira-listening-text" data-i18n="aira.listening">Escuchando</span>
+                    <span class="aira-wave"></span>
+                    <span class="aira-wave"></span>
+                    <span class="aira-wave"></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- PANTALLA 1: INICIO -->
+    <section id="screen-home" class="screen screen--active">
+        <div class="home__content" role="button" tabindex="0" aria-label="Toca para continuar">
+            <div class="home__logo-container">
+                <img src="assets/images/icon.jpeg" alt="Logo Juan Carlos Díaz" class="home__logo">
+            </div>
+            <h1 class="home__name">Juan Carlos Díaz Quintanilla</h1>
+            <p class="home__role" data-i18n="home.programador">Programador front end</p>
+            <p class="home__hint" data-i18n="home.tocaPantalla">Toca la pantalla</p>
+        </div>
+    </section>
+
+    <!-- PANTALLA 2: TRANSICIÓN -->
+    <section id="screen-transition" class="screen screen--hidden" aria-hidden="true">
+        <div class="transition__content">
+            <blockquote class="transition__quote">
+                <p data-i18n="transition.frase">El front-end no es estética. Es control.<br>Y yo controlo la experiencia.</p>
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- PANTALLA 3: SOBRE MÍ -->
+    <section id="screen-about" class="screen screen--hidden" aria-hidden="true">
+        <nav class="main-nav" role="navigation" aria-label="Navegación principal">
+            <ul class="nav__links">
+                <li><a href="#screen-home" class="nav__link" data-i18n="nav.inicio">INICIO</a></li>
+                <li><a href="#screen-about" class="nav__link nav__link--active" data-i18n="nav.sobreMi">SOBRE MÍ</a></li>
+                <li><a href="#screen-projects" class="nav__link" data-i18n="nav.proyectos">PROYECTOS</a></li>
+                <li><a href="#screen-nexo" class="nav__link" data-i18n="nav.nexo">NEXO</a></li>
+            </ul>
+
+            <button class="aira-nav-btn" onclick="openAira()" aria-label="Abrir Aira asistente virtual">
+                <img src="assets/images/aira.jpeg" alt="Aira" class="aira-nav-btn__icon">
+                <span class="aira-nav-btn__pulse"></span>
+            </button>
+        </nav>
+
+        <main class="about__main">
+            <div class="about__wrapper">
+                <article class="profile-card" id="profile-trigger">
+                    <div class="profile-card__avatar">
+                        <img src="assets/images/icon.jpeg" alt="Foto de Juan Carlos Díaz">
+                    </div>
+                    <h2 class="profile-card__name">Juan Carlos Díaz<br>Quintanilla</h2>
+                    <button class="profile-card__cta" aria-haspopup="dialog" data-i18n="about.botonCTA">
+                        ¿Quieres conocerme?
+                    </button>
+                </article>
+
+                <div class="about__info">
+                    <div class="modal__header">
+                        <h3 data-i18n="modal.titulo">SOBRE MÍ:</h3>
+                        <hr class="modal__header-line">
+                    </div>
+                    <div class="about-modal" id="about-modal" role="dialog" aria-modal="true" aria-hidden="true">
+                        <div class="modal__body">
+                            <p data-i18n="modal.texto">
+                                Desarrollador front-end enfocado en crear interfaces web modernas, 
+                                intuitivas y funcionales. Trabajo con HTML, CSS, JavaScript, Vue.js y 
+                                React.js, transformando ideas en experiencias claras, responsivas y 
+                                eficientes, cuidando el diseño, la usabilidad y el rendimiento, mientras 
+                                continúo aprendiendo y perfeccionando mis habilidades.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <button class="footer-float-btn" aria-label="Abrir footer de contacto">
+            <i class="bi bi-chevron-up"></i>
+        </button>
+
+        <footer class="main-footer">
+            <div class="footer__bar">
+                <div class="footer__brand">
+                    <img src="assets/images/aira.jpeg" alt="" class="footer__logo">
+                    <span data-i18n="footer.contactame">Puedes contactarme</span>
+                </div>
+                <div class="footer__links">
+                    <a href="https://github.com/DiazJaja" target="_blank" rel="noopener" class="footer__link">
+                        <i class="bi bi-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://linkedin.com/in/juan-carlos-díaz-quintanilla-5609b73a9/" target="_blank" rel="noopener" class="footer__link">
+                        <i class="bi bi-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="mailto:MachiNoNezumi2026@gmail.com" class="footer__link">
+                        <i class="bi bi-envelope-fill"></i>
+                        <span>Email</span>
+                    </a>
+                </div>
+            </div>
+            <hr class="footer__divider">
+            <p class="footer__copy" data-i18n="footer.derechos">Derechos reservados a Juan Carlos Díaz Quintanilla</p>
+        </footer>
+    </section>
+
+    <!-- PANTALLA 4: PROYECTOS -->
+    <section id="screen-projects" class="screen screen--hidden" aria-hidden="true">
+        <nav class="main-nav" role="navigation" aria-label="Navegación principal">
+            <ul class="nav__links">
+                <li><a href="#screen-home" class="nav__link" data-i18n="nav.inicio">INICIO</a></li>
+                <li><a href="#screen-about" class="nav__link" data-i18n="nav.sobreMi">SOBRE MÍ</a></li>
+                <li><a href="#screen-projects" class="nav__link nav__link--active" data-i18n="nav.proyectos">PROYECTOS</a></li>
+                <li><a href="#screen-nexo" class="nav__link" data-i18n="nav.nexo">NEXO</a></li>
+            </ul>
+
+            <button class="aira-nav-btn" onclick="openAira()" aria-label="Abrir Aira asistente virtual">
+                <img src="assets/images/aira.jpeg" alt="Aira" class="aira-nav-btn__icon">
+                <span class="aira-nav-btn__pulse"></span>
+            </button>
+        </nav>
+
+        <main class="projects__main">
+            <div class="projects__wrapper">
+                <div class="projects__header">
+                    <span class="projects__label" data-i18n="projects.titulo">PROYECTOS DESTACABLES</span>
+                    <div class="projects__line"></div>
+                </div>
+
+                <div class="projects__carousel">
+                    <button class="carousel__btn carousel__btn--prev" onclick="moveCarousel(-1)" aria-label="Anterior">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+
+                    <div class="carousel__track-container">
+                        <div class="carousel__track" id="carouselTrack">
+
+                            <article class="project-card active" data-index="0">
+                                <div class="project-card__frame">
+                                    <div class="project-card__image">
+                                        <img src="assets/images/Calculadora.png" alt="Calculadora" class="project-card__img">
+                                    </div>
+                                    <div class="project-card__info">
+                                        <h3 class="project-card__name" data-i18n="projects.p1.nombre">Calculadora de Sueldos</h3>
+                                        <p class="project-card__description" data-i18n="projects.p1.descripcion">
+                                            Aplicación web para el cálculo de salarios líquidos con descuentos de ISSS, AFP, Renta Imponible e ISR.
+                                        </p>
+                                        <div class="tech-stack-compact" data-project="0" id="techCompact-0">
+                                            <div class="tech-tags-visible">
+                                                <span class="tech-tag">JAVASCRIPT</span>
+                                                <span class="tech-tag">HOSTINGER</span>
+                                                <span class="tech-tag">LARAVEL</span>
+                                            </div>
+                                            <button class="tech-expand-btn" onclick="toggleTechExpand(0)">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                        </div>
+                                        <div class="tech-stack-expanded" id="techExpanded-0">
+                                            <div class="tech-tags-all">
+                                                <span class="tech-tag">JAVASCRIPT</span>
+                                                <span class="tech-tag">HOSTINGER</span>
+                                                <span class="tech-tag">LARAVEL</span>
+                                                <span class="tech-tag">BOOTSTRAP</span>
+                                                <span class="tech-tag">VS CODE</span>
+                                                <span class="tech-tag">CSS</span>
+                                            </div>
+                                            <button class="tech-collapse-btn" onclick="toggleTechExpand(0)">
+                                                <i class="bi bi-chevron-up"></i>
+                                            </button>
+                                        </div>
+                                        <div class="project-role">
+                                            <div class="role-circle"><img src="assets/images/aira.jpeg" alt="Rol"></div>
+                                            <div class="role-label" data-i18n="projects.rolLabel">ROL DESEMPEÑADO:</div>
+                                            <div class="role-value">
+                                                <span data-i18n="projects.p1.rol">FULL STACK</span>
+                                                <div class="role-line"></div>
+                                            </div>
+                                        </div>
+                                        <a href="https://github.com/DiazJaja/CalculadoraDeSueldos" class="project-card__link" target="_blank" rel="noopener">
+                                            <i class="bi bi-github"></i>
+                                            <span data-i18n="projects.verGithub">Ver en GitHub</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="project-card" data-index="1">
+                                <div class="project-card__frame">
+                                    <div class="project-card__image">
+                                        <div class="project-card__placeholder">
+                                            <i class="bi bi-image"></i>
+                                            <span data-i18n="projects.imagenPlaceholder">IMAGEN DEL PROYECTO</span>
+                                        </div>
+                                    </div>
+                                    <div class="project-card__info">
+                                        <h3 class="project-card__name" data-i18n="projects.p2.nombre">FINECONIA</h3>
+                                        <p class="project-card__description" data-i18n="projects.p2.descripcion">
+                                            Plataforma de gestión financiera personal con seguimiento de gastos, presupuestos y análisis de hábitos de consumo.
+                                        </p>
+                                        <div class="tech-stack-compact" data-project="1" id="techCompact-1">
+                                            <div class="tech-tags-visible">
+                                                <span class="tech-tag">JAVASCRIPT</span>
+                                                <span class="tech-tag">HOSTINGER</span>
+                                                <span class="tech-tag">VS CODE</span>
+                                            </div>
+                                            <button class="tech-expand-btn" onclick="toggleTechExpand(1)">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                        </div>
+                                        <div class="tech-stack-expanded" id="techExpanded-1">
+                                            <div class="tech-tags-all">
+                                                <span class="tech-tag">JAVASCRIPT</span>
+                                                <span class="tech-tag">HOSTINGER</span>
+                                                <span class="tech-tag">VS CODE</span>
+                                                <span class="tech-tag">LARAVEL</span>
+                                                <span class="tech-tag">HTML</span>
+                                                <span class="tech-tag">CSS</span>
+                                                <span class="tech-tag">PHP</span>
+                                            </div>
+                                            <button class="tech-collapse-btn" onclick="toggleTechExpand(1)">
+                                                <i class="bi bi-chevron-up"></i>
+                                            </button>
+                                        </div>
+                                        <div class="project-role">
+                                            <div class="role-circle"><img src="assets/images/aira.jpeg" alt="Rol"></div>
+                                            <div class="role-label" data-i18n="projects.rolLabel">ROL DESEMPEÑADO:</div>
+                                            <div class="role-value">
+                                                <span data-i18n="projects.p2.rol">FRONT END</span>
+                                                <div class="role-line"></div>
+                                            </div>
+                                        </div>
+                                        <a href="https://github.com/XENITHCODE2025/Fineconia.git" class="project-card__link" target="_blank" rel="noopener">
+                                            <i class="bi bi-github"></i>
+                                            <span data-i18n="projects.verGithub">Ver en GitHub</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="project-card" data-index="2">
+                                <div class="project-card__frame">
+                                    <div class="project-card__image">
+                                        <div class="project-card__placeholder">
+                                            <i class="bi bi-image"></i>
+                                            <span data-i18n="projects.imagenPlaceholder">IMAGEN DEL PROYECTO</span>
+                                        </div>
+                                    </div>
+                                    <div class="project-card__info">
+                                        <h3 class="project-card__name" data-i18n="projects.p3.nombre">RED SOCIAL</h3>
+                                        <p class="project-card__description" data-i18n="projects.p3.descripcion">
+                                            Plataforma de comercio electrónico completa enfocada en la venta y compra de autos con geolocalización exacta.
+                                        </p>
+                                        <div class="tech-stack-compact" data-project="2" id="techCompact-2">
+                                            <div class="tech-tags-visible">
+                                                <span class="tech-tag">BOOTSTRAP</span>
+                                                <span class="tech-tag">MONGODB</span>
+                                                <span class="tech-tag">EXPRESS</span>
+                                            </div>
+                                            <button class="tech-expand-btn" onclick="toggleTechExpand(2)">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                        </div>
+                                        <div class="tech-stack-expanded" id="techExpanded-2">
+                                            <div class="tech-tags-all">
+                                                <span class="tech-tag">BOOTSTRAP</span>
+                                                <span class="tech-tag">MONGODB</span>
+                                                <span class="tech-tag">EXPRESS</span>
+                                                <span class="tech-tag">NODE.JS</span>
+                                                <span class="tech-tag">JQUERY</span>
+                                                <span class="tech-tag">SOCKET.IO</span>
+                                            </div>
+                                            <button class="tech-collapse-btn" onclick="toggleTechExpand(2)">
+                                                <i class="bi bi-chevron-up"></i>
+                                            </button>
+                                        </div>
+                                        <div class="project-role">
+                                            <div class="role-circle"><img src="assets/images/aira.jpeg" alt="Rol"></div>
+                                            <div class="role-label" data-i18n="projects.rolLabel">ROL DESEMPEÑADO:</div>
+                                            <div class="role-value">
+                                                <span data-i18n="projects.p3.rol">FULL STACK</span>
+                                                <div class="role-line"></div>
+                                            </div>
+                                        </div>
+                                        <a href="https://github.com/DiazJaja/RedSocial.git" class="project-card__link" target="_blank" rel="noopener">
+                                            <i class="bi bi-github"></i>
+                                            <span data-i18n="projects.verGithub">Ver en GitHub</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+
+                        </div>
+                    </div>
+
+                    <button class="carousel__btn carousel__btn--next" onclick="moveCarousel(1)" aria-label="Siguiente">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="carousel__indicators" id="carouselIndicators">
+                    <span class="indicator active" onclick="goToSlide(0)"></span>
+                    <span class="indicator" onclick="goToSlide(1)"></span>
+                    <span class="indicator" onclick="goToSlide(2)"></span>
+                </div>
+            </div>
+        </main>
+
+        <button class="footer-float-btn" aria-label="Abrir footer de contacto">
+            <i class="bi bi-chevron-up"></i>
+        </button>
+
+        <footer class="main-footer">
+            <div class="footer__bar">
+                <div class="footer__brand">
+                    <img src="assets/images/aira.jpeg" alt="" class="footer__logo">
+                    <span data-i18n="footer.contactame">Puedes contactarme</span>
+                </div>
+                <div class="footer__links">
+                    <a href="https://github.com/DiazJaja" target="_blank" rel="noopener" class="footer__link">
+                        <i class="bi bi-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://linkedin.com/in/juan-carlos-díaz-quintanilla-5609b73a9/" target="_blank" rel="noopener" class="footer__link">
+                        <i class="bi bi-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="mailto:MachiNoNezumi2026@gmail.com" class="footer__link">
+                        <i class="bi bi-envelope-fill"></i>
+                        <span>Email</span>
+                    </a>
+                </div>
+            </div>
+            <hr class="footer__divider">
+            <p class="footer__copy" data-i18n="footer.derechos">Derechos reservados a Juan Carlos Díaz Quintanilla</p>
+        </footer>
+    </section>
+
+    <!-- ==================== PANTALLA 5: NEXO ==================== -->
+    <section id="screen-nexo" class="screen screen--hidden" aria-hidden="true">
+        <nav class="main-nav" role="navigation" aria-label="Navegación principal">
+            <ul class="nav__links">
+                <li><a href="#screen-home" class="nav__link" data-i18n="nav.inicio">INICIO</a></li>
+                <li><a href="#screen-about" class="nav__link" data-i18n="nav.sobreMi">SOBRE MÍ</a></li>
+                <li><a href="#screen-projects" class="nav__link" data-i18n="nav.proyectos">PROYECTOS</a></li>
+                <li><a href="#screen-nexo" class="nav__link nav__link--active" data-i18n="nav.nexo">NEXO</a></li>
+            </ul>
+
+            <button class="aira-nav-btn" onclick="openAira()" aria-label="Abrir Aira asistente virtual">
+                <img src="assets/images/aira.jpeg" alt="Aira" class="aira-nav-btn__icon">
+                <span class="aira-nav-btn__pulse"></span>
+            </button>
+        </nav>
+
+        <main class="nexo__main">
+            <!-- HERO -->
+            <div class="nexo__hero">
+                <div class="nexo__header">
+                    <span class="nexo__header-label">Nexo</span>
+                    <div class="nexo__header-line"></div>
+                </div>
+                <p class="nexo__subtitle" data-i18n="nexo.subtitulo">Conectemos ideas. Escríbeme o explora lo que comparto.</p>
+            </div>
+
+            <!-- MAIN GRID -->
+            <div class="nexo__grid">
+
+                <!-- FORMULARIO DE CONTACTO -->
+                <div class="nexo__card nexo__card--form">
+                    <div class="nexo__card-header">
+                        <i class="bi bi-send-fill"></i>
+                        <h2 data-i18n="nexo.form.titulo">Escríbeme</h2>
+                    </div>
+
+                    <form action="https://formspree.io/f/xnjrwjzj" method="POST">
+                        <div class="nexo__form-row">
+                            <div class="nexo__form-group">
+                                <label for="nexo-nombre" data-i18n="nexo.form.nombre">Nombre *</label>
+                                <input type="text" id="nexo-nombre" name="nombre" placeholder="Tu nombre" data-i18n-placeholder="nexo.form.placeholder.nombre" required>
+                            </div>
+                            <div class="nexo__form-group">
+                                <label for="nexo-email" data-i18n="nexo.form.email">Email *</label>
+                                <input type="email" id="nexo-email" name="email" placeholder="tu@email.com" data-i18n-placeholder="nexo.form.placeholder.email" required>
+                            </div>
+                        </div>
+
+                        <div class="nexo__form-group">
+                            <label for="nexo-asunto" data-i18n="nexo.form.asunto">Asunto</label>
+                            <input type="text" id="nexo-asunto" name="asunto" placeholder="¿De qué se trata?" data-i18n-placeholder="nexo.form.placeholder.asunto">
+                        </div>
+
+                        <div class="nexo__form-group">
+                            <label for="nexo-mensaje" data-i18n="nexo.form.mensaje">Mensaje *</label>
+                            <textarea id="nexo-mensaje" name="mensaje" placeholder="Cuéntame sobre tu proyecto, idea o lo que necesites..." data-i18n-placeholder="nexo.form.placeholder.mensaje" required></textarea>
+                        </div>
+
+                        <button type="submit" class="nexo__btn-submit">
+                            <i class="bi bi-send"></i> <span data-i18n="nexo.form.enviar">Enviar mensaje</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- BITÁCORA -->
+                <div class="nexo__card nexo__card--articles">
+                    <div class="nexo__card-header">
+                        <i class="bi bi-journal-text"></i>
+                        <h2 data-i18n="nexo.bitacora.titulo">Bitácora</h2>
+                    </div>
+
+                    <div class="nexo__article-list">
+                        <div class="nexo__article-card" data-article="0">
+                            <span class="nexo__article-tag" data-i18n="nexo.article1.tag">Tutorial</span>
+                            <div class="nexo__article-title" data-i18n="nexo.article1.title">Cómo estructurar un portafolio de desarrollador en 2026</div>
+                            <div class="nexo__article-meta" data-i18n="nexo.article1.date">24 Mayo 2026</div>
+                            <div class="nexo__article-excerpt" data-i18n="nexo.article1.excerpt">Guía práctica para crear un portafolio que destaque tus habilidades técnicas y proyectos personales de forma profesional.</div>
+                            <div class="nexo__article-full" style="display:none;">
+                                <p data-i18n="nexo.article1.full.p1">Crear un portafolio efectivo en 2026 requiere más que mostrar proyectos. Necesitas contar una historia.</p>
+                                <p data-i18n="nexo.article1.full.p2">Empieza por definir tu nicho: ¿eres especialista en React, Vue, o full-stack? Luego, estructura cada proyecto con contexto, problema, solución y resultado.</p>
+                                <p data-i18n="nexo.article1.full.p3">Incluye métricas reales: "Reduje el tiempo de carga en un 40%" suena mejor que "optimicé la web". Y no olvides el factor humano: un breve "sobre mí" que conecte emocionalmente.</p>
+                            </div>
+                        </div>
+
+                        <div class="nexo__article-card" data-article="1">
+                            <span class="nexo__article-tag" data-i18n="nexo.article2.tag">Opinión</span>
+                            <div class="nexo__article-title" data-i18n="nexo.article2.title">El futuro del desarrollo frontend: ¿IA o código tradicional?</div>
+                            <div class="nexo__article-meta" data-i18n="nexo.article2.date">18 Mayo 2026</div>
+                            <div class="nexo__article-excerpt" data-i18n="nexo.article2.excerpt">Reflexiones sobre el impacto de la inteligencia artificial en el trabajo diario de los desarrolladores web.</div>
+                            <div class="nexo__article-full" style="display:none;">
+                                <p data-i18n="nexo.article2.full.p1">La IA no va a reemplazarnos, pero sí va a transformar cómo trabajamos. Herramientas como Copilot o Cursor aceleran el desarrollo, pero el juicio crítico sigue siendo humano.</p>
+                                <p data-i18n="nexo.article2.full.p2">Lo que cambia es el foco: de escribir líneas de código a diseñar arquitecturas, experiencias de usuario y soluciones creativas. El frontend del futuro es híbrido.</p>
+                                <p data-i18n="nexo.article2.full.p3">Mi consejo: aprende a usar la IA como aliada, no como competencia. Domina los fundamentos y deja que la automatización maneje lo repetitivo.</p>
+                            </div>
+                        </div>
+
+                        <div class="nexo__article-card" data-article="2">
+                            <span class="nexo__article-tag" data-i18n="nexo.article3.tag">Recurso</span>
+                            <div class="nexo__article-title" data-i18n="nexo.article3.title">10 herramientas que uso diariamente como freelance</div>
+                            <div class="nexo__article-meta" data-i18n="nexo.article3.date">10 Mayo 2026</div>
+                            <div class="nexo__article-excerpt" data-i18n="nexo.article3.excerpt">Una lista curada de aplicaciones y extensiones que me ayudan a ser más productivo en mis proyectos.</div>
+                            <div class="nexo__article-full" style="display:none;">
+                                <p>1. <strong>VS Code</strong> - <span data-i18n="nexo.article3.full.p1">Mi editor principal, con extensiones esenciales como Prettier, ESLint y GitLens.</span></p>
+                                <p>2. <strong>Figma</strong> - <span data-i18n="nexo.article3.full.p2">Para prototipar y colaborar con diseñadores sin fricción.</span></p>
+                                <p>3. <strong>Notion</strong> - <span data-i18n="nexo.article3.full.p3">Gestión de proyectos, notas y documentación en un solo lugar.</span></p>
+                                <p>4. <strong>Postman</strong> - <span data-i18n="nexo.article3.full.p4">Testing de APIs indispensable para proyectos full-stack.</span></p>
+                                <p>5. <strong>Vercel</strong> - <span data-i18n="nexo.article3.full.p5">Deploys rápidos y preview por cada pull request.</span></p>
+                                <p data-i18n="nexo.article3.full.p6">Y 5 más que descubrirás al tocar esta tarjeta... 😉</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="nexo__articles-count">
+                        <i class="bi bi-journal-check"></i>
+                        <span data-i18n="nexo.articles.count">3 artículos publicados</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- FOOTER REGRESADO -->
+        <button class="footer-float-btn" aria-label="Abrir footer de contacto">
+            <i class="bi bi-chevron-up"></i>
+        </button>
+
+        <footer class="main-footer">
+            <div class="footer__bar">
+                <div class="footer__brand">
+                    <img src="assets/images/aira.jpeg" alt="" class="footer__logo">
+                    <span data-i18n="footer.contactame">Puedes contactarme</span>
+                </div>
+                <div class="footer__links">
+                    <a href="https://github.com/DiazJaja" target="_blank" rel="noopener" class="footer__link">
+                        <i class="bi bi-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://linkedin.com/in/juan-carlos-díaz-quintanilla-5609b73a9/" target="_blank" rel="noopener" class="footer__link">
+                        <i class="bi bi-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="mailto:MachiNoNezumi2026@gmail.com" class="footer__link">
+                        <i class="bi bi-envelope-fill"></i>
+                        <span>Email</span>
+                    </a>
+                </div>
+            </div>
+            <hr class="footer__divider">
+            <p class="footer__copy" data-i18n="footer.derechos">Derechos reservados a Juan Carlos Díaz Quintanilla</p>
+        </footer>
+    </section>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/footer.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/translation.js"></script>
+    <script src="js/projects.js"></script>
+    <script src="js/aira.js"></script>
+    <script src="js/nexo.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
